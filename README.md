@@ -46,8 +46,8 @@ cd finance-dashboard
 **2. Configure `application.properties`**
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/finance_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-spring.datasource.username=root
-spring.datasource.password=sqlAccess
+spring.datasource.username=DB_USERNAME
+spring.datasource.password=DB_PASSWORD
 spring.jpa.hibernate.ddl-auto=update
 app.jwt.secret=<your-secret-key>
 app.jwt.expiration-ms=86400000
@@ -80,7 +80,6 @@ http://localhost:8080/api/
 | Method | Endpoint | Description |
 |---|---|---|
 | `GET` | `/api/users` | List all users |
-| `POST` | `/api/users/register` | Create a new user |
 | `PUT` | `/api/users/{id}` | Update user details or role |
 
 ### Financial Records
@@ -91,7 +90,8 @@ http://localhost:8080/api/
 | `PUT` | `/api/records/{id}` | Update a record |
 | `DELETE` | `/api/records/{id}` | Delete a record |
 
-### Dashboard
+### Dashboard (VIEWER)
+Shows only records belonging to the authenticated user
 | Method | Endpoint | Description |
 |---|---|---|
 | `GET` | `/api/dashboard/total-income` | Total income |
@@ -100,6 +100,18 @@ http://localhost:8080/api/
 | `GET` | `/api/dashboard/category-totals` | Category-wise totals |
 | `GET` | `/api/dashboard/monthly-trend` | Monthly trend data |
 | `GET` | `/api/dashboard/recent-activity?limit=5` | Recent activity feed |
+
+### Dashboard (ADMIN & ANALYST)
+Shows aggregated records for all users
+Can be used for monitoring overall performance
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/admin-dashboard/total-income` | Total income |
+| `GET` | `/api/admin-dashboard/total-expenses` | Total expenses |
+| `GET` | `/api/admin-dashboard/net-balance` | Net balance |
+| `GET` | `/api/admin-dashboard/category-totals` | Category-wise totals |
+| `GET` | `/api/admin-dashboard/monthly-trend` | Monthly trend data |
+| `GET` | `/api/admin-dashboard/recent-activity?limit=5` | Recent activity feed |
 
 ---
 
