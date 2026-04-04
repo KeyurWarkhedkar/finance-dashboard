@@ -1,14 +1,20 @@
-# Use lightweight OpenJDK 21 image
-FROM openjdk:21-jdk-slim
+# ---- Build Stage ----
+FROM maven:3.9-eclipse-temurin-21 AS build
 
-# Set working directory
 WORKDIR /app
 
-# Copy jar file (after mvn package)
-COPY target/*.jar app.jar
+COPY pom.xml .
+COPY src ./src
 
-# Expose port
+RUN mvn clean package -DskipTests
+
+# ---- Runtime Stage ----
+FROM eclipse-temurin:21-jre
+
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar app.jar
+
 EXPOSE 8080
 
-# Run the app
 ENTRYPOINT ["java", "-jar", "app.jar"]
