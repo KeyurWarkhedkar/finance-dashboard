@@ -53,12 +53,19 @@ public class WebSecurityConfig {
             .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth ->
-                auth.requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers("/api/dashboard/**").hasAnyAuthority("ROLE_VIEWER", "ROLE_ANALYST", "ROLE_ADMIN")
-                    .requestMatchers("/api/records/**").hasAnyAuthority("ROLE_ANALYST", "ROLE_ADMIN")
-                    .requestMatchers("/api/users/**").hasAuthority("ROLE_ADMIN")
-                    .requestMatchers("/api/admin-dashboard/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_ANALYST")
-                    .anyRequest().authenticated()
+                    auth.requestMatchers("/api/auth/**").permitAll()
+                            .requestMatchers(
+                                    "/swagger-ui/**",
+                                    "/v3/api-docs/**",
+                                    "/swagger-ui.html"
+                            ).permitAll()
+
+                            .requestMatchers("/api/dashboard/**").hasAnyAuthority("ROLE_VIEWER", "ROLE_ANALYST", "ROLE_ADMIN")
+                            .requestMatchers("/api/records/**").hasAnyAuthority("ROLE_ANALYST", "ROLE_ADMIN")
+                            .requestMatchers("/api/users/**").hasAuthority("ROLE_ADMIN")
+                            .requestMatchers("/api/admin-dashboard/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_ANALYST")
+
+                            .anyRequest().authenticated()
             );
 
         http.authenticationProvider(authenticationProvider());
